@@ -35,7 +35,7 @@ get-options () {
     #               examples
     #                 vvvv
     while getopts 'hvnW:H:-:' OPTION ; do
-        check-long-option || break
+        check-long-option || break # OPTIONAL
         case "${OPTION}" in
             'h'|'help')
                 usage
@@ -50,11 +50,11 @@ get-options () {
 
             # BEGIN EXAMPLES
             'W'|'width')
-                require-argument "$@"
+                require-argument "$@" # OPTIONAL
                 width="${OPTARG}"
                 ;;
             'H'|'height')
-                require-argument "$@"
+                require-argument "$@" # OPTIONAL
                 height="${OPTARG}"
                 ;;
             # END EXAMPLES
@@ -64,7 +64,7 @@ get-options () {
                 >&2 echo "Type '${PROGNAME} --help' for more information."
                 exit 1
                 ;;
-            *)
+            *)                  # OPTIONAL
                 # invalid long option
                 >&2 echo "${PROGNAME}: unknown option -- ${OPTION}"
                 >&2 echo "Type '${PROGNAME} --help' for more information."
@@ -90,6 +90,7 @@ EOF
 ###############################################################################
 # poor man's long options for bash
 
+# OPTIONAL
 check-long-option () {
     if [[ "${OPTION}" = "-" ]] ; then
         if [[ "${OPTARG}" == "" ]] ; then
@@ -108,6 +109,7 @@ check-long-option () {
     return 0
 }
 
+# OPTIONAL
 require-argument () {
     # does nothing for short options
     if [[ "${OPTION}" = ? ]] ; then return ; fi
